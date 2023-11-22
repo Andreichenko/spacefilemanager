@@ -3,13 +3,13 @@ name: Docker Build
 on:
   workflow_run:
     workflows: ["Build with Gradle"]
+    branches: [master]
     types:
       - completed
 
 jobs:
   docker-build:
     runs-on: ubuntu-latest
-    needs: build
 
     steps:
       - uses: actions/checkout@v2
