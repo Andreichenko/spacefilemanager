@@ -1,4 +1,4 @@
-name: Build with Gradle
+name: Build and Dockerize
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ '*' ]
 
 jobs:
-  build:
+  build-and-dockerize:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,8 +24,16 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Upload JAR
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: jar
+          name: jar-file
           path: build/libs/*.jar
+
+      - name: Build Docker Image
+        run: |
+          docker build . --file Dockerfile --tag myapp:latest
+
+      - name: Run Docker Image
+        run: |
+          docker run --rm -d -p 8080:8080 myapp:latest
