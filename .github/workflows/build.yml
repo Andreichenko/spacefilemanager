@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: Build with Gradle
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ '*' ]
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,9 +24,3 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
-
-      - name: Build Docker Image
-        run: docker build . --file Dockerfile --tag myapp:latest
-
-      - name: Run Docker Image
-        run: docker run --rm -d -p 8080:8080 myapp:latest
