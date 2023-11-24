@@ -1,5 +1,6 @@
 package com.frei.spacefilemanager.service;
 
+import com.frei.spacefilemanager.entities.FileDetail;
 import org.springframework.stereotype.Service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
@@ -30,5 +31,16 @@ public class FileService {
     public InputStream downloadFile(String fileName) {
         S3Object s3object = s3Client.getObject(new GetObjectRequest(bucketName, fileName));
         return s3object.getObjectContent();
+    }
+
+    public List<FileDetail> listFileDetails() {
+        ListObjectsV2Result result = s3Client.listObjectsV2(bucketName);
+        return result.getObjectSummaries().stream()
+                .map(this::mapToFileDetail)
+                .collect(Collectors.toList());
+    }
+
+    private FileDetail mapToFileDetail(S3ObjectSummary summary) {
+        return new FileDetail(summary.getKey(), summary.getSize(), summary.getLastModified());
     }
 }

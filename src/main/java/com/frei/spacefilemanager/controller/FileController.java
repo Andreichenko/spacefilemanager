@@ -1,5 +1,6 @@
 package com.frei.spacefilemanager.controller;
 
+import com.frei.spacefilemanager.entities.FileDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,5 +32,10 @@ public class FileController {
         return ResponseEntity.ok()
                 .header("Content-Disposition", "attachment; filename=" + fileName)
                 .body(resource);
+    }
+
+    @GetMapping("/details")
+    public List<FileDetail> listFileDetails() {
+        return fileService.listFileDetails();
     }
 }
