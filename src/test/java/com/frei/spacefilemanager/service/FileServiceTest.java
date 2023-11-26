@@ -35,8 +35,7 @@ public class FileServiceTest {
         mockResult.getObjectSummaries().add(summary);
         when(s3Client.listObjectsV2("callbot")).thenReturn(mockResult);
 
-
-        List<FileService.FileDetail> details = fileService.listFileDetails();
+        List<FileDetail> details = fileService.listFileDetails();
         assertEquals(1, details.size());
         assertEquals("test-file.txt", details.get(0).getName());
         assertEquals(12345L, details.get(0).getSize());
