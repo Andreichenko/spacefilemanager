@@ -15,6 +15,8 @@ import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+
 
 @WebMvcTest(FileController.class)
 public class FileControllerTest {
@@ -33,7 +35,7 @@ public class FileControllerTest {
 
     @Test
     void listFileDetails_returnsCorrectResponse() throws Exception {
-        mockMvc.perform(get("/files/details"))
+        mockMvc.perform(get("/files/details").with(user("user").password("password").roles("USER")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("test-file.txt"))
                 .andExpect(jsonPath("$[0].size").value(12345));
