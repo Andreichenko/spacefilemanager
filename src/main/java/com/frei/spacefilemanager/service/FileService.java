@@ -43,4 +43,12 @@ public class FileService {
     private FileDetail mapToFileDetail(S3ObjectSummary summary) {
         return new FileDetail(summary.getKey(), summary.getSize(), summary.getLastModified());
     }
+
+    public List<FileDetail> searchFiles(String query) {
+        ListObjectsV2Result result = s3Client.listObjectsV2(bucketName);
+        return result.getObjectSummaries().stream()
+                .filter(s -> s.getKey().contains(query))
+                .map(this::mapToFileDetail)
+                .collect(Collectors.toList());
+    }
 }
